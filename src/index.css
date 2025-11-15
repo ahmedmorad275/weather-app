@@ -1,0 +1,65 @@
+@import 'tailwindcss';
+
+:root {
+  --background: hsl(210 100% 97%);
+  --foreground: hsl(215 25% 27%);
+  --card: hsl(0 0% 100%);
+  --primary: hsl(210 100% 50%);
+  --secondary: hsl(200 100% 45%);
+  --muted: hsl(210 40% 96.1%);
+  --muted-foreground: hsl(215 16% 47%);
+  --border: hsl(210 30% 90%);
+  --ring: hsl(210 100% 50%);
+}
+
+body {
+  background-color: var(--background);
+}
+
+.header .title svg {
+  animation: svganim 3s infinite ease-in-out both;
+  color: var(--primary);
+}
+
+@keyframes svganim {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.searchInput {
+  border: 2px solid var(--border);
+}
+.searchInput:focus {
+  outline: 2px solid var(--ring);
+}
+#searchBtn {
+  outline: none;
+}
+#searchBtn:focus {
+  outline: 2px solid var(--ring);
+  border: 2px solid;
+  opacity: 0.85;
+}
+.searchIcon {
+  display: flex;
+  position: relative;
+  justify-content: center;
+}
+
+.city svg {
+  color: var(--primary);
+}
+.temp {
+  padding-bottom: 20px;
+  border-bottom: 1px var(--border) solid;
+}
+#searchBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
