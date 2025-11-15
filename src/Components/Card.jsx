@@ -19,7 +19,7 @@ const Card = () => {
     const timer = setTimeout(async function getData() {
       try {
         const response = await fetch(
-          `http://api.weatherapi.com/v1/current.json?key=13bdd46b48e24e1597c164312251511&q=${name}&aqi=no`
+          `https://api.weatherapi.com/v1/current.json?key=13bdd46b48e24e1597c164312251511&q=${name}&aqi=no`
         );
         if (!response.ok) {
           throw new Error('Respons Failed');
