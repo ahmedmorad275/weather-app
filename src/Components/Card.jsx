@@ -2,43 +2,62 @@ import React, { useContext, useEffect, useState } from 'react';
 import { CiLocationOn } from 'react-icons/ci';
 import { TiWeatherWindy } from 'react-icons/ti';
 import { WiHumidity } from 'react-icons/wi';
-import axios from 'axios';
 import { CityContext } from './CityContext';
+import DialogForm from './Dialog';
 
 const Card = () => {
   const { name } = useContext(CityContext);
   const [cityName, setCityName] = useState('');
+  const [countryName, setCountryName] = useState('');
   const [temp, setTemp] = useState('');
   const [text, setText] = useState('');
   const [icon, setIcon] = useState('');
   const [wind, setWind] = useState('');
   const [hum, setHum] = useState('');
+  const [open, setOpen] = useState(false);
   useEffect(() => {
-    // Make a request for a user with a given ID
-    axios
-      .get(
-        `http://api.weatherapi.com/v1/current.json?key=13bdd46b48e24e1597c164312251511&q=${name}&aqi=no`
-      )
-      .then(function (response) {
-        const result = response.data;
+    const timer = setTimeout(async function getData() {
+      try {
+        const response = await fetch(
+          `http://api.weatherapi.com/v1/current.json?key=13bdd46b48e24e1597c164312251511&q=${name}&aqi=no`
+        );
+        if (!response.ok) {
+          throw new Error('Respons Failed');
+        }
+        const result = await response.json();
         setCityName(result.location.name);
+        setCountryName(result.location.country);
         setTemp(result.current.temp_c);
         setHum(result.current.humidity);
         setWind(result.current.wind_mph);
         setText(result.current.condition.text);
         setIcon(result.current.condition.icon);
-      })
-      .catch(function (error) {
+      } catch (error) {
         console.log(error);
-        alert("The weather for this city isn't Available");
-      });
+        setOpen(true);
+      }
+    }, 1);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [name]);
+
+  function handleDialogClick() {
+    setOpen(false);
+  }
 
   return (
     <section className="text-(--foreground) card-container px-8 my-8 bg-(--card) w-fit mx-auto p-2 rounded-xl shadow-lg">
+      <DialogForm
+        openHandle={open}
+        setOpenHandle={setOpen}
+        handleClick={handleDialogClick}
+      />
       <div className="city mt-2 flex justify-center items-center text-lg gap-1 font-semibold">
         <CiLocationOn />
-        <h3>{cityName}</h3>
+        <h3>
+          {cityName}, {countryName}
+        </h3>
       </div>
       <div className="weather-logo text-8xl  flex justify-center my-8">
         <img src={`https:${icon}`} alt={text} />
